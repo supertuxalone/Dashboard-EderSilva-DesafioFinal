@@ -1,4 +1,3 @@
-import { UserInfo } from './../../../../../../senai-last-app-main/senai-last-app-main/src/app/shared/models/user-info';
 import jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
@@ -53,14 +52,14 @@ export class UsuarioService {
 		this.usuarioSubject.next(usuario);
 	}
 
-  getPermissions(): string[] {
-    const user = this.decodeJwt();
-    return user.roles;
-  }
+  // getPermissions(): string[] {
+  //   const user = this.decodeJwt();
+  //   //return user.roles;
+  // }
 
-  private decodeJwt(): UserInfo {
+  private decodeJwt(): usuarioInfo {
     const token = this.tokenService.retornaToken();
-    const user = jwt_decode(token) as UserInfo;
+    const user = jwt_decode(token) as usuarioInfo;
     return user;
   }
 }

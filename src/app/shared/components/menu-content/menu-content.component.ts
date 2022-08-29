@@ -12,7 +12,7 @@ export class MenuContentComponent implements OnInit {
 
   @Output() showMenuContentEmitter = new EventEmitter<boolean>();
 
-  hasPermission: boolean = this.userService.getPermissions().includes("ADMIN");
+  // hasPermission: boolean = this.userService.getPermissions().includes("ADMIN");
 
   constructor(private userService: UsuarioService) { }
 

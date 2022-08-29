@@ -1,0 +1,258 @@
+Construção de Dashboar Desafio Full Stack
+
+Para realizar as verificações de tipos de tanto do typescript do angular,
+como tbm do proprio angular. ex , Vericações de tipo de tamplate
+#ng new Desafio-Eder-angular -strict
+
+Para as regras de typescript de maneira harmoniosa
+#npm install --save-dev prettier
+
+Pacotes de desenvolvimento:
+#npm install --save-dev tslint-config-prettier
+#npm install --save-dev tslint-plugin-prettier
+
+No Arquivo tslint, coloque no atributo extends:
+????
+
+Instalação do Bootstrap:
+#npm i bootstrap font-awesome
+
+Para utilizar as bibliotecas no projeto e incorporar o CSS ao CSS global do projeto:
+no arquivo "angular.json"
+linha => styles": [
+              "src/styles.css",
+              "./node_modules/boostrap/dist/css/boostrap.min.css",
+              ".node_modules/font-awesome/css/font-awesome.css"
+
+Criar a feature module que isola as Routing dos modulos 
+#ng generate module home --routing
+    CREATE src/app/home/home-routing.module.ts (247 bytes)
+    CREATE src/app/home/home.module.ts (272 bytes)
+
+Criar o component dentro da home:
+#ng g c home
+    CREATE src/app/home/home.component.html (19 bytes)
+    CREATE src/app/home/home.component.spec.ts (585 bytes)
+    CREATE src/app/home/home.component.ts (267 bytes)
+    CREATE src/app/home/home.component.css (0 bytes)
+    UPDATE src/app/home/home.module.ts (343 bytes)
+	
+Na Api deixar rodando atraves do comando:
+#npm start
+dentro da pasta onde a API se encontra
+
+################################################################################
+1 - ] exportar o homecomponent 
+em home.module.ts
+     exports:[
+    HomeComponent
+  ],
+em app.module.ts
+    imports: [
+    BrowserModule,
+    HomeModule,
+    AppRoutingModule    
+  ],
+
+2 - ] em app.component.html (arquivo principal que o cli cria automatico, apague todo o html)
+    2.1 - ] selector: 'app-home', (atual)
+
+    2.2 - ] então informe no corpo do app.component.html
+            <app-home></app-home>
+    2.3 - ] executar para abrir a aplicação e ver o resultado 
+        #ng serve --o
+
+3 - ] LazyLoad (sobe demanda)
+em app-routing.module.ts  
+    //define que quando o usario não acessar uma rota definida ele deve ir para a pagina HOME
+const routes: Routes = [
+  {
+    path:'',
+    pathMatch: 'full',
+    redirectTo: 'home',
+  },
+  {
+    path: 'home',
+    loadChildren:()=> import('./home/home.module').then((m)=>m.HomeModule),
+  },
+
+  em home-routing.module.ts
+  //assim que o usuario acesso esse modulo ele será direcionado para a rota desse modulo
+  import { HomeComponent } from './home.component';
+  ...
+   {
+    path: '',
+    component: HomeComponent,
+  },
+
+  4 - ] Interface de Login
+ #ng g c home/login
+    CREATE src/app/home/login/login.component.html (20 bytes)
+    CREATE src/app/home/login/login.component.spec.ts (592 bytes)
+    CREATE src/app/home/login/login.component.ts (271 bytes)
+    CREATE src/app/home/login/login.component.css (0 bytes)
+    UPDATE src/app/home/home.module.ts (457 bytes)
+
+    4.1 - ] 
+    em home-routing.module.ts
+    atualizar para 
+    import { LoginComponent } from './login/login.component';
+    ...
+        {
+        //assim que o usuario acesso esse modulo ele será direcionado para a rota desse modulo
+        path: '',
+        component: HomeComponent,
+        children: [
+        {
+            //quando for uma rota vazia ele vai projetar o Login.Componnet
+            path: '',
+            component: LoginComponent, 
+        },
+        ],
+    },
+
+    4.2 - ] em app.module.ts
+    atualizar   
+        import { HttpClientModule } from '@angular/common/http';
+        ...
+             imports: [
+              BrowserModule,
+              AppRoutingModule,
+              HttpClientModule,
+            ],
+
+
+   4.2 - ] criar o layout no login.component.html
+	<section class="vh-100">
+		<div class="container-fluid">
+		  <div class="row">
+			<div class="col-sm-12 text-black">
+	  
+			  <div class="px-5 ms-xl-4">
+				<i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+				<span class="h1 fw-bold mb-0">Acesso ao Sistema</span>
+			  </div>  
+			  <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 pt-5 pt-xl-0 mt-xl-n5">
+	  
+				<form class="form mt-4" style="width: 23rem;">
+			 
+				  <div class="form-outline mb-4">
+					<input type="text"  name="usuario"
+					 class="form-control form-control-lg"
+					 placeholder="Informe o usuario..." required/>					 
+				  </div>
+	  
+				  <div class="form-outline mb-4">
+					<input type="password" name="senha" class="form-control form-control-lg" 
+					placeholder="Informe a senha..." required/>					 
+				  </div>
+	  
+				  <div class="pt-1 mb-4">
+					<button class="btn btn-info btn-lg btn-block" type="submit" >Acessar</button>
+				  </div>
+	  
+				  <p>Não tem uma conta ? <a class="link-info">Registre-se Aqui</a></p>
+	  
+				</form>
+	  
+			  </div>
+	  
+			</div>
+		   </div>
+		</div>
+	  </section>
+
+   
+
+5 - ] criando as regras de autenticação, 
+    5.1 - ] criando module de autenticacao
+    #ng g m autenticacao
+        CREATE src/app/autenticacao/autenticacao.module.ts (198 bytes)
+
+    5.2 - ] criando o service de autenticacao dentro do module de autenticacao
+    #ng g s autenticacao/autenticacao
+        CREATE src/app/autenticacao/autenticacao.service.spec.ts (387 bytes)
+        CREATE src/app/autenticacao/autenticacao.service.ts (141 bytes)
+
+    5.3 - ]
+    em autenticacao.service.ts  
+    import { HttpClient } from '@angular/common/http';
+    import { Observable } from 'rxjs';
+    ...   
+        //criar constructor
+        constructor(private httpClient: HttpClient) { }
+
+        //metodo que fazer uma requisição do tipo post no back-end
+        autenticar(usuario:string, senha:string): Observable<any>{
+            return this.httpClient.post('http://localhost:3000/user/login', {
+			 //O back-end está esperando o objeto que contém os atributos userName e password
+			user_name: usuario,
+			user_password: senha,
+		   });
+		}    
+6 - ]
+ //adequar no html para enviar as informação para o modulo/service de autenticacao
+    em home.module.ts   
+    atualizar   
+        import { FormsModule } from '@angular/forms';
+        ...
+            imports: [
+                CommonModule,
+                HomeRoutingModule,
+                FormsModule
+            ],       
+
+    6.1 - ] adequar o login.component.html com as diretivas do angular
+      em login.component.html   
+    atualizar   
+        <form class="form mt-4" (ngSubmit)="login()" #loginForm="ngForm"...                               
+        e os input  
+            <input type="usuario" [(ngModel)]="usuario" name="usuario"
+            <input type="senha" [(ngModel)]="senha" name="senha" 
+
+    6.2 - ] criar o modelo:
+    em login.component.ts   
+    atualizar
+		 //atributos de classe
+		usuario = 'eder';
+		senha = '';
+
+		constructor(private authService: AutenticacaoService) { }	
+
+        ...
+
+			//metodo de login
+			  login(){
+				this.authService.autenticar(this.usuario, this.senha).subscribe(() => {
+				  console.log('Atenticado com Sucesso');      
+				}, (error) => {
+				  alert('Usuário ou senha Inválidos');
+				  console.log(error);
+				}
+			   );
+			  }
+
+//Redirecionar a Rota
+		Criar a pastas essencial/dashboard
+								/bem-vindo		
+								/novo-usuario
+	
+		#ng g m dashboard/dashboard  --routing        
+		CREATE src/app/essencial/dashboard/dashboard/dashboard-routing.module.ts (252 bytes)
+		CREATE src/app/essencial/dashboard/dashboard/dashboard.module.ts (292 bytes)
+			
+			*recortar para a pasta dashboard
+
+		#ng g c dashboard/dashboard    
+		CREATE src/app/essencial/dashboard/dashboard/dashboard.component.html (24 bytes)
+		CREATE src/app/essencial/dashboard/dashboard/dashboard.component.spec.ts (620 bytes)
+		CREATE src/app/essencial/dashboard/dashboard/dashboard.component.ts (287 bytes)
+		CREATE src/app/essencial/dashboard/dashboard/dashboard.component.css (0 bytes)
+		UPDATE src/app/essencial/dashboard/dashboard.module.ts (388 bytes)
+		
+		
+	//criar novo elemento para a rota
+		{
+			path: 'dashboard',
+			loadChildren: () => import('./essencial/dashboard/dashboard.module').then((m) => m.DashboardModule),
+		},

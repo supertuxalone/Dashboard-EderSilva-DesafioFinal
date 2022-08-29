@@ -2,6 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RodapeComponent } from './rodape.component';
+import { MenuprincipalModule } from '../menuprincipal/menuprincipal.module';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,9 @@ import { RodapeComponent } from './rodape.component';
   ],
   imports: [
     CommonModule,
-    RouterModule
-  ]
+    RouterModule,
+    MenuprincipalModule
+  ],
+  exports: [RodapeComponent],
 })
 export class RodapeModule { }

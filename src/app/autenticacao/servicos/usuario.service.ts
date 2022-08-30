@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { usuarioInfo } from 'src/app/shared/models/user-info';
 import { TokenService } from './token.service';
 
-const API = environment.apiURL;
+ const API = environment.apiURL;
 const NO_USER: usuarioInfo = {} as usuarioInfo;
 
 @Injectable({

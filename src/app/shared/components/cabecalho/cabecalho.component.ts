@@ -15,8 +15,8 @@ export class CabecalhoComponent {
 
   //interessante ele voltar para tela de login
   logout() {
-  this.usuarioService.logout();
-  this.router.navigate(['']);
+    this.usuarioService.logout();
+    this.router.navigate(['']);
   }
 
 }

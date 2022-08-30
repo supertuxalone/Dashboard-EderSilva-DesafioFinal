@@ -33,3 +33,29 @@
     </span>
   </ng-template>
   </header> -->
+  <header class="sticky-top">
+    <nav class="navbar navbar-light" id="cabecalho">
+      <a class="navbar-brand">
+        <i class="fa fa-bars mr-2" (click)="menu.abreMenu()"(keyup.space)="menu.abreMenu()"></i>
+      DashBoard</a>
+      <app-menuprincipal #menu>
+      <ul class="list-unstyled">
+        <li>
+            <a [routerLink]="['veiculos', 'novo']">Novo</a>
+        </li>
+      </ul>
+      </app-menuprincipal>
+      <div *ngIf="user$ | async as user">
+      <div *ngIf="user.username;">
+        <i class="fa fa-user-circle mr-1"> </i>
+        <a class="mr-1">{{ user.username }}</a>
+        <a (click)="logout()">Logout</a>
+      </div>
+      </div>
+    </nav>
+    <ng-template #login>
+      <span class="navbar-text">
+      <a [routerLink]="['']">Login</a>
+      </span>
+    </ng-template>
+  </header>
